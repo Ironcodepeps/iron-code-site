@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iron Code — Peptide Research &amp; Educational Reference</title>
+<meta name="description" content="Iron Code is a desktop reference application for peptide science: compound library, mechanisms, molecular data, and research context. Research and educational use only.">
+<!--
+  ============================================================
+  PLACEHOLDERS TO FILL BEFORE GOING LIVE  (search for "TBD__")
+    TBD__FREE_DOWNLOAD_URL   -> direct link to the free installer
+                                (e.g. a GitHub Releases asset URL)
+    TBD__BUY_URL             -> paid checkout link
+                                (Lemon Squeezy / Gumroad / Stripe)
+    TBD__VERSION             -> current app version shown to users
+  The Free vs Paid feature split below is the recommended default
+  (Free = educational reference, Paid = tools). Adjust the two
+  <ul> lists in the "compare" section if you change the split.
+  ============================================================
+-->
+<style>
+  :root{
+    --bg:#0f0f0d; --surface:#1a1a17; --surface2:#242420; --surface3:#2e2e28;
+    --accent:#c4a050; --accent2:#d4b468; --text1:#f0ead8; --text2:#c4bc9e;
+    --text3:#8a8070; --success:#5a9a6a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--text1);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    line-height:1.6;font-size:16px;
+  }
+  a{color:var(--accent);text-decoration:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+  header{
+    position:sticky;top:0;z-index:10;backdrop-filter:blur(8px);
+    background:rgba(15,15,13,.85);border-bottom:1px solid var(--surface3);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+  .logo{font-size:20px;font-weight:800;color:var(--text1)}
+  .logo span{color:var(--accent)}
+  .nav-links a{margin-left:22px;color:var(--text2);font-size:14px}
+  .nav-links a:hover{color:var(--text1)}
+
+  .hero{text-align:center;padding:70px 0 50px}
+  .hero h1{font-size:40px;line-height:1.15;margin-bottom:14px}
+  .hero h1 span{color:var(--accent)}
+  .hero p.tag{font-size:18px;color:var(--text2);max-width:620px;margin:0 auto 28px}
+  .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{
+    display:inline-block;padding:14px 26px;border-radius:10px;font-weight:700;
+    font-size:15px;cursor:pointer;border:none;transition:transform .08s,opacity .15s;
+  }
+  .btn:hover{transform:translateY(-1px);opacity:.92}
+  .btn-primary{background:var(--accent);color:#181810}
+  .btn-secondary{background:var(--surface2);color:var(--text1);border:1px solid var(--surface3)}
+  .btn-disabled{background:var(--surface2);color:var(--text3);border:1px solid var(--surface3);cursor:default}
+  .btn-disabled:hover{transform:none;opacity:1}
+  .btn-sub{display:block;font-size:12px;font-weight:500;color:var(--text3);margin-top:8px}
+
+  .disclaimer{
+    background:rgba(196,160,80,.07);border:1px solid rgba(196,160,80,.22);
+    border-radius:10px;padding:14px 18px;margin:10px auto 0;max-width:760px;
+    font-size:13px;color:var(--text2)
+  }
+  .disclaimer strong{color:var(--text1)}
+
+  section{padding:54px 0;border-top:1px solid var(--surface3)}
+  h2{font-size:26px;margin-bottom:8px;text-align:center}
+  .sub{color:var(--text3);text-align:center;margin-bottom:34px}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{
+    background:var(--surface);border:1px solid var(--surface3);
+    border-radius:12px;padding:22px
+  }
+  .card h3{font-size:16px;margin-bottom:8px;color:var(--text1)}
+  .card p{font-size:14px;color:var(--text2)}
+  .card .ic{font-size:24px;margin-bottom:10px}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:820px;margin:0 auto}
+  .tier{
+    background:var(--surface);border:1px solid var(--surface3);
+    border-radius:14px;padding:26px;display:flex;flex-direction:column
+  }
+  .tier.pro{border-color:rgba(196,160,80,.4)}
+  .tier h3{font-size:20px;margin-bottom:4px}
+  .tier .price{font-size:14px;color:var(--text3);margin-bottom:18px}
+  .tier ul{list-style:none;margin:0 0 22px;flex:1}
+  .tier li{font-size:14px;color:var(--text2);padding:7px 0 7px 26px;position:relative}
+  .tier li::before{content:'✓';color:var(--success);position:absolute;left:0;font-weight:700}
+  .tier li.no{color:var(--text3)}
+  .tier li.no::before{content:'—';color:var(--text3)}
+
+  .req{max-width:760px;margin:0 auto;font-size:14px;color:var(--text2)}
+  .req li{margin:6px 0 6px 20px}
+  .faq{max-width:760px;margin:0 auto}
+  .faq details{
+    background:var(--surface);border:1px solid var(--surface3);
+    border-radius:10px;padding:14px 18px;margin-bottom:10px
+  }
+  .faq summary{cursor:pointer;font-weight:600;color:var(--text1);font-size:15px}
+  .faq p{font-size:14px;color:var(--text2);margin-top:10px}
+
+  footer{border-top:1px solid var(--surface3);padding:30px 0 50px;color:var(--text3);font-size:13px}
+  footer a{color:var(--text2)}
+  .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+
+  @media(max-width:760px){
+    .grid{grid-template-columns:1fr}
+    .compare{grid-template-columns:1fr}
+    .hero h1{font-size:30px}
+    .nav-links{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">Iron <span>Code</span></div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Free &amp; Pro</a>
+      <a href="#download">Download</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="wrap hero">
+    <h1>Iron <span>Code</span><br>Peptide Research &amp; Educational Reference</h1>
+    <p class="tag">A desktop reference for peptide science — a searchable
+      compound library with mechanisms, molecular data, research history,
+      and regulatory status.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#download">
+        Download Free
+        <span class="btn-sub">Windows 10/11 · 64-bit</span>
+      </a>
+      <a class="btn btn-secondary" href="#pricing">
+        Compare Free &amp; Pro
+        <span class="btn-sub">See what Pro adds</span>
+      </a>
+    </div>
+    <div class="disclaimer">
+      ⚠️ <strong>Research &amp; educational use only.</strong> Not medical
+      advice. Not a treatment guide. Many compounds described are not
+      FDA-approved and human safety may be unestablished. Intended for
+      adults <strong>21+</strong>. Always consult a licensed healthcare
+      professional.
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="wrap">
+      <h2>What's inside</h2>
+      <p class="sub">An encyclopedia-style reference — not instructions for use.</p>
+      <div class="grid">
+        <div class="card"><div class="ic">📚</div><h3>Compound library</h3>
+          <p>A large, searchable catalog of peptide compounds with
+          plain-language descriptions.</p></div>
+        <div class="card"><div class="ic">⚙️</div><h3>Mechanisms &amp; data</h3>
+          <p>Mechanism-of-action explanations plus molecular data: class,
+          molecular weight, amino-acid count, half-life.</p></div>
+        <div class="card"><div class="ic">🏛️</div><h3>Regulatory status</h3>
+          <p>Research history and current approval / regulatory standing
+          for each entry.</p></div>
+        <div class="card"><div class="ic">🔎</div><h3>Topic browser</h3>
+          <p>Explore which compounds appear in research literature in
+          relation to areas of study.</p></div>
+        <div class="card"><div class="ic">🧮</div><h3>Reference tools <em>(Pro)</em></h3>
+          <p>Reconstitution / dilution math helper and research-parameter
+          references for educational study.</p></div>
+        <div class="card"><div class="ic">🔖</div><h3>Offline &amp; private</h3>
+          <p>Works fully offline. No accounts, no tracking, no data
+          collection. Everything stays on your device.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING / FREE vs PRO -->
+  <section id="pricing">
+    <div class="wrap">
+      <h2>Free &amp; Pro</h2>
+      <p class="sub">Same reference core. Pro unlocks the study tools.</p>
+      <!-- ADJUST THESE TWO LISTS IF THE FREE/PAID SPLIT CHANGES -->
+      <div class="compare">
+        <div class="tier">
+          <h3>Free</h3>
+          <div class="price">Free download</div>
+          <ul>
+            <li>Full compound reference library</li>
+            <li>Mechanisms &amp; molecular data</li>
+            <li>Research history &amp; regulatory status</li>
+            <li>Topic browser</li>
+            <li>Bookmarks · offline · private</li>
+            <li class="no">Reconstitution / dilution helper</li>
+            <li class="no">Research-protocol reference</li>
+            <li class="no">Compound combination references</li>
+            <li class="no">Reminders</li>
+          </ul>
+          <a class="btn btn-secondary" href="#download">Download Free</a>
+        </div>
+        <div class="tier pro">
+          <h3>Pro</h3>
+          <div class="price">One-time purchase — coming soon</div>
+          <ul>
+            <li>Everything in Free</li>
+            <li>Reconstitution / dilution math helper</li>
+            <li>Research-protocol reference views</li>
+            <li>Compound combination references</li>
+            <li>Reminders</li>
+            <li>Future Pro updates</li>
+          </ul>
+          <!-- PAID-CTA: when checkout is ready, restore the line below and remove the "Coming soon" span:
+          <a class="btn btn-primary" href="TBD__BUY_URL">Get Pro</a> -->
+          <span class="btn btn-disabled">Pro — Coming Soon</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section id="download">
+    <div class="wrap">
+      <h2>Download</h2>
+      <p class="sub">Windows 10/11, 64-bit · version 1.0.0</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/ironcodepeps/iron-code-releases/releases/latest/download/IronCode-Free-Setup.exe">
+          Download Free (Installer)
+          <span class="btn-sub">.exe · ~80 MB</span>
+        </a>
+        <!-- PAID-CTA: when checkout is ready, restore the anchor below and remove the "Coming soon" span:
+        <a class="btn btn-secondary" href="TBD__BUY_URL">Get Pro<span class="btn-sub">Unlocks study tools</span></a> -->
+        <span class="btn btn-disabled">
+          Pro — Coming Soon
+          <span class="btn-sub">Study tools — in development</span>
+        </span>
+      </div>
+      <div style="margin-top:34px" class="req">
+        <strong>System requirements</strong>
+        <ul>
+          <li>Windows 10 or 11 (64-bit)</li>
+          <li>~250 MB free disk space</li>
+          <li>No internet connection required to use the app</li>
+        </ul>
+        <p style="margin-top:14px;color:var(--text3);font-size:13px">
+          On first run Windows SmartScreen may show
+          “Windows protected your PC” for independent software — click
+          <em>More info → Run anyway</em>. SHA-256 checksums are provided
+          with each download for integrity verification.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <h2>FAQ</h2>
+      <p class="sub">&nbsp;</p>
+      <div class="faq">
+        <details>
+          <summary>Is this medical advice?</summary>
+          <p>No. Iron Code is a research and educational reference only.
+          It is not medical advice, not a treatment guide, and not a
+          substitute for a licensed healthcare professional. Many
+          compounds described are not FDA-approved. It is intended for
+          adults 21 or older.</p>
+        </details>
+        <details>
+          <summary>Why does Windows warn me when I run it?</summary>
+          <p>Independent software without an expensive code-signing
+          reputation triggers SmartScreen’s “Windows protected your PC”
+          prompt. Click <em>More info → Run anyway</em>. Verify the
+          download with the provided SHA-256 checksum if you want
+          assurance the file is intact.</p>
+        </details>
+        <details>
+          <summary>What does Pro add?</summary>
+          <p>Pro (coming soon) will unlock the study tools
+          (reconstitution/dilution math helper, research-protocol
+          reference views, compound combination references, and
+          reminders). The full reference library is available now in the
+          free version.</p>
+        </details>
+        <details>
+          <summary>Do you collect my data?</summary>
+          <p>No. The app works fully offline with no accounts, analytics,
+          or tracking. See the
+          <a href="https://ironcodepeps.github.io/iron-code-privacy/">privacy policy</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>© 2026 Kyle Beck · Iron Code Health &amp; Wellness<br>
+      Research &amp; educational use only. Not medical advice.</div>
+    <div>
+      <a href="https://ironcodepeps.github.io/iron-code-privacy/">Privacy Policy</a><br>
+      <a href="mailto:IronCodepeps@gmail.com">IronCodepeps@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
