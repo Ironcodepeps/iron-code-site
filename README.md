@@ -1,7 +1,14 @@
 # iron-code-site
 
-Standalone, publish-ready download/landing website for the Iron Code
-desktop app. Static — one `index.html`, no build step, no app source.
+Publish-ready website for Iron Code: a static landing page
+(`index.html`) **plus** the hosted free web app under `app/`.
+
+- `index.html` — landing/download page (hand-edited)
+- `app/` — the free/trimmed web app, **generated** by
+  `npm run build:web` (from the project root). Never hand-edit `app/`;
+  rebuild and commit it. One `git push` deploys both the landing page
+  and the online app.
+- Web app URL once live: `https://ironcodepeps.github.io/iron-code-site/app/`
 
 GitHub account: **ironcodepeps**
 
